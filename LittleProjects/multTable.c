@@ -1,6 +1,9 @@
 /*We'll print the multiplication table up to n*/
 /*It's done already but I want to make it look good. There used to be something in C++ that we set width or something
 Let's see if I can find it*/
+/*%3d is working for example but it starts writing my number from right instead of left...*/
+/*Alright %-3d is making it start writing from left ^^*/
+//DONE!
 
 #include <stdio.h>
 
@@ -22,7 +25,7 @@ void multTable(int n){
     for(size_t i = 1; i <= n; i++){
         for(size_t j = 1; j <= n; j++){
             print = i * j;
-            printf("%d * %d = %d  ", j, i, print);
+            printf("%-2d *  %-2d =  %-4d  ", j, i, print);
         }
         printf("\n");
     }
