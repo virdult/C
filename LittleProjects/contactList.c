@@ -24,6 +24,7 @@ typedef struct
     char number[16];
 }contact;
 
+void printList(contact* contactList, int maxContact);
 void searchContactName(contact* contactList, int maxContact);
 void searchContactNumber(contact* contactList, int maxContact);
 void deleteContact(contact* contactList, int maxContact);
@@ -42,6 +43,10 @@ int main(){
     
     //Allocating memory:
     contact* contactList = malloc(maxContact*sizeof(contact));
+    if(contactList == NULL){
+        printf("Memory allocation failed!\n");
+        return 1;
+    }
 
     //Getting contact inputs:
     for(int i = 0; i < maxContact; i++){
@@ -50,9 +55,7 @@ int main(){
     }
 
     //Printing Contact List
-    for(int i = 0; i < maxContact; i++){
-        printf("No: %-2d's -> Name: %-30s | Number: %-16s\n", i, contactList[i].name, contactList[i].number);
-    }
+    printList(contactList, maxContact);
 
     menu(contactList, maxContact);
 
@@ -89,6 +92,7 @@ void menu(contact* contactList, int maxContact){
         printf("1 - Search by name\n");
         printf("2 - Search by number\n");
         printf("3 - Delete a contact\n");
+        printf("4 - Print the List\n");
         printf("Choice: ");
         scanf("%d", &choice);
         
@@ -98,12 +102,14 @@ void menu(contact* contactList, int maxContact){
             searchContactNumber(contactList, maxContact);
         }else if(choice == 3){
             deleteContact(contactList, maxContact);
+        }else if(choice == 4){
+            printList(contactList, maxContact);
         }
     }while(choice != 0);
 }
 
 
-void searchContactName(contact* contactList, int maxContact){
+/* void searchContactName(contact* contactList, int maxContact){
     char tempName[31];
     printf("Type the persons name you want to search: \n");
     scanf(" %31s", tempName); //The reason we don't use & is tempName is already an array so it decays to pointer
@@ -115,27 +121,67 @@ void searchContactName(contact* contactList, int maxContact){
         }
     }//Try something new with a while loop, put the strcmp in the while! This is not working as how I intended
     //menu(contactList, maxContact); -> Not necessary for the correct version of the menu
-}
+} */
+void searchContactName(contact* contactList, int maxContact){
+    char tempName[31];
+    int i = 0;
+    printf("Type the persons name you want to search: \n");
+    scanf(" %30s", tempName);
+    while(i < maxContact && (contactList[i].name, tempName) != 0){
+        i++;
+    }
+    if(i < maxContact){
+        printf("The person you're looking for is at list number %d\n", i);
+    }else{
+        printf("Person not found.\n");
+    }
+}//This works quite well. Let's implement the same to the number
+
 void searchContactNumber(contact* contactList, int maxContact){
     char tempNumber[16];
+    int i = 0;
     printf("Type the persons phone number you want to search: \n");
-    scanf(" %16s", tempNumber);
-    for(int i = 0; i < maxContact; i++){
-        if(strcmp(contactList[i].number, tempNumber) == 0){
-            printf("The person you're looking for is at list number %d\n", i);
-        }else{
-            printf("Person not found.\n");
-        }
+    scanf(" %15s", tempNumber);
+    while(i < maxContact && (contactList[i].number, tempNumber) != 0){
+        i++;
+    }
+    if(i < maxContact){
+        printf("The person you're looking for is at list number %d\n", i);
+    }else{
+        printf("Person not found.\n");
     }
     //menu(contactList, maxContact);
 }
+//There is a problem in deleteContact, if my input is letter it gets in an infinite loop...
+//Will try to fix that.
 void deleteContact(contact* contactList, int maxContact){
-    int contactNumber;
+    int contactNumber = 0;
     do{
-    printf("Enter the list number of the person you want to delete from Contact List.\n");
-    scanf(" %d", &contactNumber);
-    }while(contactNumber < 0 || contactNumber > maxContact);
-    *contactList[contactNumber].name = '\0';
-    *contactList[contactNumber].number = '\0';
+        printf("Enter the list number of the person you want to delete from Contact List.\n");
+        scanf(" %d", &contactNumber);
+    }while(contactNumber < 0 || contactNumber >= maxContact);
+    contactList[contactNumber].name[0] = '\0';
+    contactList[contactNumber].number[0] = '\0';
     //menu(contactList, maxContact);
+}
+/*TRIED THIS BUT DIDN'T WORK. I GUESS I NEED SOMTHING LIKE FGETS BUT I'LL LEAVE IT AT HERE!
+void deleteContact(contact* contactList, int maxContact){
+    int contactNumber = 0, result;
+    do{
+        printf("Enter the list number of the person you want to delete from Contact List.\n");
+        result = scanf(" %d", &contactNumber);
+        if (result != 1){
+            printf("Invalid input! Please enter a number.\n");
+            while(getchar() != '\0');
+            contactNumber = -1;
+        }
+    }while(contactNumber < 0 || contactNumber >= maxContact);
+}
+*/
+void printList(contact* contactList, int maxContact){
+    for(int i = 0; i < maxContact; i++){
+        if(contactList[i].name[0] != '\0'){
+            printf("No: %-2d's -> Name: %-30s | Number: %-16s\n", i, contactList[i].name, contactList[i].number);
+        }
+    }
 }
