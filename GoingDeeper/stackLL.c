@@ -23,14 +23,15 @@ Node* push(Node* top, int data){
     return newNode;
 }
 
-Node* pop(Node* top, int* poppedValue){
+Node* pop(Node* top){
     if(!top){
         printf("Stack underflow!");
         return NULL;
     }
     Node* temp = top;
-    *poppedValue = temp->data;
+    int popped = top->data;
     top = top->next;
+    printf("Popped %d from the stack.\n", popped);
     free(temp);
     return top;
 }
@@ -67,10 +68,7 @@ int main() {
             stack = push(stack, value);
         } 
         else if (choice == 2) {
-            stack = pop(stack, &popped);
-            if (stack || popped) {
-                printf("Popped: %d\n", popped);
-            }
+            stack = pop(stack);
         } 
         else if (choice == 3) {
             peek(stack);
