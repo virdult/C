@@ -7,7 +7,7 @@ typedef struct Node{
 }Node;
 
 Node* createNode(int data){
-    Node* newNode = (Node*)sizeof(sizeof(Node));
+    Node* newNode = (Node*)malloc(sizeof(Node));
     if(!newNode){
         perror("malloc failed!");
         exit(EXIT_FAILURE);
@@ -35,7 +35,7 @@ Node* pop(Node* top, int* poppedValue){
     return top;
 }
 
-Node* peak(Node* top){
+void peek(Node* top){
     if(!top){
         printf("Stack is empty!");
     }else{
