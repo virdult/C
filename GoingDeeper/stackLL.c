@@ -57,10 +57,16 @@ void printStack(Node* top){
 int main() {
     Node* stack = NULL;
     int choice, value, popped;
+    char buffer[100];
 
     while (1) {
         printf("\n1. Push\n2. Pop\n3. Peek\n4. Print Stack\n5. Exit\nChoice: ");
-        scanf("%d", &choice);
+        //You should use this check if int thing below everywhere quite literally...
+        fgets(buffer, sizeof(buffer), stdin);
+        if (sscanf(buffer, "%d", &choice) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+            continue; // back to menu
+        }
 
         if (choice == 1) {
             printf("Enter value to push: ");
