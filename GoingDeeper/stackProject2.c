@@ -21,6 +21,10 @@ void init(Stack* s) {
 
 void push(Stack* s, int value){
     Node* newNode = (Node*)malloc(sizeof(Node));
+    if(!newNode){
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
     newNode->data = value;
     newNode->next = s->top;
     s->top = newNode;
