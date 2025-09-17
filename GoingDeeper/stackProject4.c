@@ -60,6 +60,12 @@ void printStack(Stack* s){
     printf("\n");
 }
 
+void freeStack(Stack* s){
+    while(!isEmpty(s)){
+        pop(s);
+    }
+}
+
 int main(){
     int val;
     char buffer[16];
@@ -84,6 +90,9 @@ int main(){
     printStack(&main);
     printf("Reversed Stack: ");
     printStack(&reverse);
+
+    freeStack(&main);
+    freeStack(&reverse);
 
     return 0;
 }
