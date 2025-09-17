@@ -1,8 +1,9 @@
 /*Write a C program that checks whether a string is a palindrome using a stack implemented as a linked list.
-Ask user to enter a string. 100 characters max. Use LL. Only use stack operation to compare. No string operations*/
+Ask user to enter a string. 100 characters max. Use LL. Only use stack operation to compare.*/
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct Node{
     char letter;
@@ -42,8 +43,28 @@ char pop(Stack* s){
     return output;
 }
 
-int checkPalindrome(const char* inputWord){
-    
+void checkPalindrome(const char* inputWord, int size){
+    Stack s;
+    init(&s);
+    int i = 0;
+    char temp;
+    while(i < size / 2){
+        push(&s, inputWord[i]);
+        i++;
+    }
+    if(size % 2 != 0){
+        i++;
+    }
+    while(i < size){    
+        temp = pop(&s);
+        if(temp != inputWord[i]){
+            printf("Not Palindrome!\n");
+            while(!isEmpty(&s)) pop(&s); //-> This line is for when not palindrome, frees the memo of the stack.
+            return;
+        }
+        i++;
+    }
+    printf("Palindrome!\n");
 }
 
 int main(){
@@ -51,11 +72,9 @@ int main(){
 
     printf("Write down the words that you want to check if it's palindrome: \n");
     fgets(inputWord, sizeof(inputWord), stdin);
-    checkPalindrome(inputWord);
-
-
-
-
+    inputWord[strcspn(inputWord, "\n")] = '\0';
+    int size = strlen(inputWord);
+    checkPalindrome(inputWord, size);
 
     return 0;
 }
