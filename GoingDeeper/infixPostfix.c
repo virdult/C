@@ -9,7 +9,7 @@
 #define MAX 51
 
 typedef struct{
-    char expression[MAX];
+    char stack[MAX];
     int top;
 }Stack;
 
@@ -18,12 +18,12 @@ int isFull(Stack* s){return s->top == MAX -1;}
 
 void push(Stack* s, char input){
     if(isFull(s)) return;
-    s->expression[++(s->top)] = input;
+    s->stack[++(s->top)] = input;
 }
 
 char pop(Stack* s){
     if(isEmpty(s)) return '\0';
-    return s->expression[(s->top)--];
+    return s->stack[(s->top)--];
 }
 
 int precedence(char op){
@@ -49,13 +49,13 @@ void toPostfix(const char* expression){
             push(&s, c);
         }
         else if(c == ')'){
-            while(!isEmpty(&s) && s.expression[s.top] != '('){
+            while(!isEmpty(&s) && s.stack[s.top] != '('){
                 printf("%c", pop(&s));
             }
             pop(&s); // discard '('
         }
         else { // operator
-            while(!isEmpty(&s) && precedence(s.expression[s.top]) >= precedence(c)){
+            while(!isEmpty(&s) && precedence(s.stack[s.top]) >= precedence(c)){
                 printf("%c", pop(&s));
             }
             push(&s, c);
