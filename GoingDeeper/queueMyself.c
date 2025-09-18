@@ -9,6 +9,10 @@ typedef struct{
 }Queue;
 
 int isEmpty(Queue* q){return q->front == -1;}
+/*This is actually not isempty I guess because I should be checking if front == rear. But if I add that, then
+I need to specify that when both are 0 which is there is only 1 input, it shouldn't consider empty. By not specifying
+it in here, I specify the front == rear condition in dequeue and reset the queue if so. I guess both works but
+I don't know which is preferred among people...*/
 int isFull(Queue* q){return q->rear == MAX - 1;}
 
 void enqueue(Queue* q, int val){
