@@ -26,34 +26,47 @@ char pop(Stack* s){
     return s->expression[(s->top)--];
 }
 
+int precedence(char op){
+    if(op == '*' || op == '/') return 2;
+    if(op == '+' || op == '-') return 1;
+    return 0;
+}
+
 void toPostfix(const char* expression){
     Stack s;
     s.top = -1;
 
-    int i = 0;
-    char popped;
-    while(expression[i] != '\0'){
-        if(expression[i] == '('){
-            push(&s, expression[i]);
-            i++;
+    for(int i = 0; expression[i] != '\0'; i++){
+        char c = expression[i];
+
+        if(c == ' ') continue; // skip spaces
+
+        if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')){
+            // Operand
+            printf("%c", c);
         }
-        if(expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/'){
-            push(&s, expression[i]);
-            i++;
+        else if(c == '('){
+            push(&s, c);
         }
-        if(expression[i] == ')'){
-            while(popped != '('){
-                popped = pop(&s);
-                printf("%c", popped);
+        else if(c == ')'){
+            while(!isEmpty(&s) && s.expression[s.top] != '('){
+                printf("%c", pop(&s));
             }
-            i++;
-        }else{
-            printf("%c", expression[i]);
-            i++;
+            pop(&s); // discard '('
+        }
+        else { // operator
+            while(!isEmpty(&s) && precedence(s.expression[s.top]) >= precedence(c)){
+                printf("%c", pop(&s));
+            }
+            push(&s, c);
         }
     }
-    popped = pop(&s);
-    printf("%c", popped);
+
+    while(!isEmpty(&s)){
+        printf("%c", pop(&s));
+    }
+
+    printf("\n");
 }
 
 int main(){
@@ -87,7 +100,6 @@ int main(){
         }
 
     }
-
 
     return 0;
 }
