@@ -83,11 +83,15 @@ int main(){
         }
         switch(choice){
         case 1:
-            printf("Enter value to enqueue: ");
-            fgets(buffer, sizeof(buffer), stdin);
-            if(sscanf(buffer, "%d", &input) != 1){
-                printf("Invalid input, please re enter a valid number: \n");
+            int valid = 0;
+            while(!valid){
+                printf("Enter the element to be enqueued: ");
                 fgets(buffer, sizeof(buffer), stdin);
+                if (sscanf(buffer, "%d", &input) == 1) {
+                    valid = 1;
+                }else{
+                    printf("Invalid input! Please enter a number.\n");
+                }
             }
             enqueue(&arrQueue, input);
             break;
