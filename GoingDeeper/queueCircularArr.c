@@ -67,7 +67,7 @@ int main(){
     init(&arrQueue);
 
     int choice, input;
-    char buffer[4];
+    char buffer[12]; // An integer is max 10 digits so I put 12 just in case 
 
     while(1){
         printf("Welcome to circular queue!\n");
