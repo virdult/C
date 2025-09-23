@@ -3,6 +3,7 @@ Use a deque (double-ended queue) for efficiency. Your algorithm should run in O(
 Input: arr = [1, 3, -1, -3, 5, 3, 6, 7], k = 3
 Output: [3, 3, 5, 5, 6, 7]*/
 
+/* -> O(n*k) answer. The O(n) is way below.
 #include <stdio.h>
 
 #define MAX 8
@@ -55,7 +56,7 @@ int queueSize(Queue* q){
         temp++;
     }
 }
-/* //This is not O(n) but O(n*k)
+
 void slidingWindowMaximum(Queue* q, int k){
     int size = queueSize(q);
     if(size < k){
@@ -73,7 +74,7 @@ void slidingWindowMaximum(Queue* q, int k){
     }
     printf("\n");
 }
-*/
+
 int main(){
     int arr[] = {1, 3, -1, -3, 5, 3, 6, 7};
     int n = sizeof(arr)/sizeof(arr[0]);
@@ -81,7 +82,6 @@ int main(){
 
     slidingWindowMaximum(arr, n, k);
 
-    /* //O(n*k)'s main part
     Queue q1;
     initQueue(&q1);
 
@@ -95,7 +95,87 @@ int main(){
     enqueue(&q1, 7);
 
     slidingWindowMaximum(&q1, 3);
-    */
+    
+
+    return 0;
+}
+*/
+
+#include <stdio.h>
+
+#define MAX 100
+
+typedef struct {
+    int arr[MAX];
+    int front, rear;
+} Deque;
+
+void initDeque(Deque* dq){
+    dq->front = dq->rear = -1;
+}
+
+int isEmpty(Deque* dq){ return dq->front == -1; }
+
+void pushBack(Deque* dq, int val){
+    if(isEmpty(dq)){
+        dq->front = dq->rear = 0;
+    } else {
+        dq->rear++;
+    }
+    dq->arr[dq->rear] = val;
+}
+
+void popBack(Deque* dq){
+    if(isEmpty(dq)) return;
+    if(dq->front == dq->rear){
+        initDeque(dq);
+    } else {
+        dq->rear--;
+    }
+}
+
+void popFront(Deque* dq){
+    if(isEmpty(dq)) return;
+    if(dq->front == dq->rear){
+        initDeque(dq);
+    } else {
+        dq->front++;
+    }
+}
+
+int front(Deque* dq){ return dq->arr[dq->front]; }
+int back(Deque* dq){ return dq->arr[dq->rear]; }
+
+void slidingWindowMaximum(int arr[], int n, int k){
+    Deque dq;//Will hold the array's index, not the values inside.
+    initDeque(&dq);
+
+    for(int i = 0; i < n; i++){
+        // Remove smaller elements from back
+        while(!isEmpty(&dq) && arr[back(&dq)] <= arr[i]){
+            popBack(&dq);
+        }
+        pushBack(&dq, i);
+
+        // Remove out-of-window elements
+        if(front(&dq) <= i - k){
+            popFront(&dq);
+        }
+
+        // Window has at least k elements, record max
+        if(i >= k - 1){
+            printf("%d, ", arr[front(&dq)]);
+        }
+    }
+    printf("\n");
+}
+
+int main(){
+    int arr[] = {1, 3, -1, -3, 5, 3, 6, 7};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    int k = 3;
+
+    slidingWindowMaximum(arr, n, k);
 
     return 0;
 }
