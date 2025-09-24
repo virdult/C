@@ -1,5 +1,3 @@
-/*I'll try to make this thing myself once*/
-
 #include <stdio.h>
 #include <stdlib.h>
 
