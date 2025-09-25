@@ -26,7 +26,7 @@ Node* createNode(int val){
 
 Node* insertNode(Node* root, int val){
     if(root == NULL){
-        createNode(val);
+        return createNode(val);
     }
     if(val < root->data){
         root->left = insertNode(root->left, val);
@@ -77,3 +77,33 @@ Node* removeNode(Node* root, int val){
     return root;
 }
 
+int rangeSumBST(Node* root, int L, int R) {
+    if(root == NULL) return 0;
+
+    if(root->data < L){
+        return rangeSumBST(root->right, L, R);
+    }
+    if(root->data > R){
+        return rangeSumBST(root->left, L, R);
+    }
+
+    int sum = root->data * root->count + rangeSumBST(root->left, L, R) + rangeSumBST(root->right, L, R);
+
+    return sum;
+}
+
+int main() {
+    Node* root = NULL;
+
+    // Build BST
+    int values[] = {50, 30, 70, 20, 40, 60, 80, 25, 35, 65, 75};
+    int n = sizeof(values) / sizeof(values[0]);
+    for(int i = 0; i < n; i++) {
+        root = insertNode(root, values[i]);
+    }
+
+    int L = 30, R = 65;
+    printf("Recursive sum in range [%d, %d]: %d\n", L, R, rangeSumBST(root, L, R));
+
+    return 0;
+}
