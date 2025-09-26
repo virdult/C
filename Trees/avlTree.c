@@ -13,6 +13,10 @@ int height(Node* n){
     return (n == NULL) ? 0: n->height;
 }
 
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
 Node* createNode(int val){
     Node* newNode = (Node*)malloc(sizeof(Node));
     if(!newNode) exit(1);

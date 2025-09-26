@@ -5,3 +5,4 @@
 4: Red parent can not have a Red child.
 5: Every path from a node to leaf must contain the same number of black nodes.
 */
+
