@@ -216,7 +216,7 @@ int main(){
     }
 
     //deletes
-    root = deleteNode(root, 15); //removes one occurrence of 15
+    root = deleteNode(root, 15); // removes one occurrence of 15
     printf("After deleting one 15: ");
     inOrderTraversal(root);
     printf("\n rank(15) = %d\n", rank(root, 15));
