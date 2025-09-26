@@ -8,6 +8,7 @@ findConflict(start, end) → check if the new event [start, end] overlaps with a
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAXNAME 100
 
@@ -29,8 +30,55 @@ typedef struct Node{
 int height(Node* n){return n ? n->height : 0;}
 int max(int a, int b){return (a > b) ? a : b;}
 
-Node createNode(int start, int end, ){
+Node* createNode(int start, int end, Date* date, char* name){
     Node* newNode = (Node*)malloc(sizeof(Node));
     if(!newNode) exit(1);
-    newNode->eventStart
+    newNode->eventStart = start;
+    newNode->eventEnd = end;
+    newNode->eventDate.day = date->day;
+    newNode->eventDate.month = date->month;
+
+    strncpy(newNode->eventName, name, MAXNAME - 1);
+    newNode->eventName[MAXNAME - 1] = '\0';
+
+    newNode->left = newNode->right = NULL;
+    newNode->height = 1;
+
+    return newNode;
 }
+
+void updateNode(Node* n){
+    if(!n) return;
+    n->height = 1 + max(height(n->left), height(n->right));
+}
+
+int getBalance(Node* n){
+    if(!n) return 0;
+    return height(n->left) - height(n->right);
+}
+
+Node* rightRotate(Node* y){
+    Node* x = y->left;
+    Node* T2 = x->right;
+
+    x->right = y;
+    y->left = T2;
+
+    updateNode(y);
+    updateNode(x);
+    return x;
+}
+
+Node* leftRotate(Node* x){
+    Node* y = x->right;
+    Node* T2 = y->left;
+
+    y->left = x;
+    x->right = T2;
+
+    updateNode(x);
+    updateNode(y);
+    return y;
+}
+
+Node* insert()
