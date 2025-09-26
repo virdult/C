@@ -102,6 +102,75 @@ Node* insert(Node* node, int val){
     return node; // unchanged node
 }
 
+Node* deleteNode(Node* root, int key) {
+    if (root == NULL) return root;
+
+    //Standard BST delete
+    if (key < root->data)
+        root->left = deleteNode(root->left, key);
+    else if (key > root->data)
+        root->right = deleteNode(root->right, key);
+    else {
+        if (root->count > 1) {
+            root->count--;
+            return root;
+        }
+
+        if ((root->left == NULL) || (root->right == NULL)) {
+            Node* temp = root->left ? root->left : root->right;
+
+            if (temp == NULL) {
+                temp = root;
+                root = NULL;
+            } else {
+                *root = *temp;
+            }
+            free(temp);
+        } else {
+            Node* temp = root->right;
+            while (temp->left != NULL) temp = temp->left;
+
+            root->data = temp->data;
+            root->count = temp->count;
+            temp->count = 1;
+            root->right = deleteNode(root->right, temp->data);
+        }
+    }
+
+    // If the tree had only one node
+    if (root == NULL) return root;
+
+    // Update height
+    root->height = 1 + max(height(root->left), height(root->right));
+
+    // Check balance
+    int balance = getBalance(root);
+
+    // Balance cases
+    // Left Left
+    if (balance > 1 && getBalance(root->left) >= 0)
+        return rightRotate(root);
+
+    // Left Right
+    if (balance > 1 && getBalance(root->left) < 0) {
+        root->left = leftRotate(root->left);
+        return rightRotate(root);
+    }
+
+    // Right Right
+    if (balance < -1 && getBalance(root->right) <= 0)
+        return leftRotate(root);
+
+    // Right Left
+    if (balance < -1 && getBalance(root->right) > 0) {
+        root->right = rightRotate(root->right);
+        return leftRotate(root);
+    }
+
+    return root;
+}
+
+
 void inorder(Node* root) {
     if (root == NULL) return;
     inorder(root->left);
