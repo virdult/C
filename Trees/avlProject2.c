@@ -81,4 +81,6 @@ Node* leftRotate(Node* x){
     return y;
 }
 
-Node* insert()
+Node* insert(Node* root, int start, int end, Date* date, char* name){
+    
+}

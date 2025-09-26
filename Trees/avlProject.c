@@ -13,7 +13,7 @@ typedef struct Node{
     int data;
     int height;
     int count;
-    int size;     //size of subtree
+    int size;//size of subtree
     struct Node* left;
     struct Node* right;
 } Node;
@@ -80,7 +80,7 @@ Node* insert(Node* node, int val){
         node->right = insert(node->right, val);
     }else{
         node->count++;
-        node->size++; //increment subtree size for this node
+        node->size++;//Increment subtree size for this node
         return node;
     }
 
@@ -163,21 +163,21 @@ Node* deleteNode(Node* root, int val){
     return root;
 }
 
-// rank(x): number of elements <= x
+//rank(x): number of elements <= x
 int rank(Node* root, int x){
     if(root == NULL) return 0;
     if(x < root->data){
         return rank(root->left, x);
     }else if(x > root->data){
-        // all left subtree + this node's count + rank in right
+        //All left subtree + this node's count + rank in right
         return getSize(root->left) + root->count + rank(root->right, x);
     }else{
-        // x == root->data: everything in left + all occurrences of this value
+        //x == root->data: everything in left + all occurrences of this value
         return getSize(root->left) + root->count;
     }
 }
 
-// select(k): returns k-th smallest (1-based). If k invalid returns INT_MIN.
+//select(k): returns k-th smallest (1-based). If k invalid returns INT_MIN.
 int selectK(Node* root, int k){
     if(root == NULL || k <= 0 || k > getSize(root)) return INT_MIN;
     int leftSize = getSize(root->left);
@@ -216,7 +216,7 @@ int main(){
     }
 
     //deletes
-    root = deleteNode(root, 15); // removes one occurrence of 15
+    root = deleteNode(root, 15); //removes one occurrence of 15
     printf("After deleting one 15: ");
     inOrderTraversal(root);
     printf("\n rank(15) = %d\n", rank(root, 15));
