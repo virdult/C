@@ -11,6 +11,7 @@ findConflict(start, end) → check if the new event [start, end] overlaps with a
 #include <string.h>
 
 #define MAXNAME 100
+#define MAXDAYS 366
 
 typedef struct{
     int day;
@@ -27,6 +28,10 @@ typedef struct Node{
     int height;
 }Node;
 
+typedef struct{
+    Node* TreeArray[MAXDAYS];
+}TreeArray;
+
 int height(Node* n){return n ? n->height : 0;}
 int max(int a, int b){return (a > b) ? a : b;}
 
@@ -40,7 +45,7 @@ Node* createNode(int start, int end, Date* date, char* name){
 
     strncpy(newNode->eventName, name, MAXNAME - 1);
     newNode->eventName[MAXNAME - 1] = '\0';
-
+a
     newNode->left = newNode->right = NULL;
     newNode->height = 1;
 
@@ -81,6 +86,10 @@ Node* leftRotate(Node* x){
     return y;
 }
 
+int inArray(, int day){
+
+}
+
 Node* insert(Node* root, int start, int end, Date* date, char* name){
-    
+    if(inArray())
 }
