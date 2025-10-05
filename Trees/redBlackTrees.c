@@ -74,3 +74,4 @@ void rightRotate(RBNode* y){
     y->parent = x;
 }
 
+void rbtInsertFix(RBNode* z);
